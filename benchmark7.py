@@ -6,16 +6,9 @@ import time
 import requests
 
 
-def download_file(server, file_name):
+def download_file():
     downloaded_bytes = 0
     chunk_size = 1024 * 8
-
-    # Remove old downloaded file
-    try:
-        subprocess.check_call('rm -f ' + file_name, shell=True)
-
-    except subprocess.CalledProcessError:
-        print('Failed to clean existing file copy')
 
     url = '/'.join([server, file_name])
 
@@ -57,11 +50,19 @@ def download_file(server, file_name):
 
 
 if __name__ == '__main__':
+    server = 'http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/'
+    file_name = 'Apalis_T30_LinuxImageV2.5Beta2_20151106.tar.bz2'
+
+    # Remove old downloaded file
+    try:
+        subprocess.check_call('rm -f ' + file_name, shell=True)
+
+    except subprocess.CalledProcessError:
+        print('Failed to clean existing file copy')
 
     start_time = time.time()
 
-    download_file('http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/',
-                  'Apalis_T30_LinuxImageV2.5Beta2_20151106.tar.bz2')
+    download_file()
 
     end_time = time.time()
 
