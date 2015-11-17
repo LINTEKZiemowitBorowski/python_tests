@@ -15,7 +15,7 @@ my_list = [[54, 26, 93, 17, 77, 31, 44, 55, 20],
            [54, 26, 93, 17, 77, 31, 44, 55, 20]]
 
 
-def bubble_sort(data_list):
+def python_sort(data_list):
     data_list.sort()
 
 if __name__ == '__main__':
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     for sub_list in tmp_list:
         for element in sub_list:
-            bubble_sort(element)
+            python_sort(element)
 
     end_time = time.time()
 
