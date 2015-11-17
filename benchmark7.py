@@ -16,10 +16,7 @@ my_list = [[54, 26, 93, 17, 77, 31, 44, 55, 20],
 
 
 def bubble_sort(data_list):
-    for pass_num in xrange(len(data_list)-1, 0, -1):
-        for i in xrange(pass_num):
-            if data_list[i] > data_list[i+1]:
-                data_list[i], data_list[i+1] = data_list[i+1], data_list[i]
+    data_list.sort()
 
 if __name__ == '__main__':
     # print ("Not sorted data: %s" % my_list)
