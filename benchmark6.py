@@ -2,17 +2,15 @@
 
 import time
 import copy
+import random
 
-my_list = [[54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20],
-           [54, 26, 93, 17, 77, 31, 44, 55, 20]]
+SEQUENCE_LEN = 10000
+ITERATIONS = 10
+MAX_VALUE = 10000
+
+
+def builtin_sort(data_list):
+    data_list.sort()
 
 
 def bubble_sort(data_list):
@@ -21,21 +19,29 @@ def bubble_sort(data_list):
             if data_list[i] > data_list[i+1]:
                 data_list[i], data_list[i+1] = data_list[i+1], data_list[i]
 
+
 if __name__ == '__main__':
+    my_randoms = [random.randrange(0, MAX_VALUE + 1, 1) for _ in range(SEQUENCE_LEN)]
+
     # print ("Not sorted data: %s" % my_list)
 
-    start_time = time.time()
+    for test in ['A', 'B']:
 
-    tmp_list = [(copy.deepcopy(my_list)) for x in xrange(10000)]
+        start_time = time.time()
 
-    copy_time = time.time()
+        tmp_list = [(copy.deepcopy(my_randoms)) for x in xrange(ITERATIONS)]
 
-    for sub_list in tmp_list:
-        for element in sub_list:
-            bubble_sort(element)
+        copy_time = time.time()
 
-    end_time = time.time()
+        if test == 'A':
+            for sub_list in tmp_list:
+                builtin_sort(sub_list)
+        else:
+            for sub_list in tmp_list:
+                bubble_sort(sub_list)
 
-    print ("Copying time: %f" % (copy_time - start_time))
-    print ("Sorting time: %f" % (end_time - copy_time))
-    # print ("Sorted data: %s" % tmp_list)
+        end_time = time.time()
+
+        print ("Copying time: %f" % (copy_time - start_time))
+        print ("Sorting time: %f" % (end_time - copy_time))
+        # print ("Sorted data: %s" % tmp_list)
