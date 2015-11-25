@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import time
-import copy
 import random
 
 SEQUENCE_LEN = 1000000
