@@ -15,11 +15,15 @@ except ImportError:
     DEVNULL = open(os.devnull, 'wb')
 
 
+SERVER = 'http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/'
+FILE_NAME = 'Apalis_T30_LinuxImageV2.5Beta2_20151106.tar.bz2'
+
+
 def download_file1():
     downloaded_bytes = 0
     chunk_size = 1024 * 8
 
-    url = '/'.join([server, file_name])
+    url = '/'.join([SERVER, FILE_NAME])
 
     print('Uploading file: %s' % url)
 
@@ -37,7 +41,7 @@ def download_file1():
                 print('Cannot obtain file size, assuming default size\n')
                 file_size = 100 * 1024 * 1024
 
-            with open(file_name, 'wb') as fd:
+            with open(FILE_NAME, 'wb') as fd:
                 for chunk in response.iter_content(chunk_size=chunk_size):
                     # Filter out keep-alive new chunks
                     if chunk:
@@ -45,18 +49,18 @@ def download_file1():
                         downloaded_bytes += len(chunk)
 
     except requests.exceptions.ConnectionError:
-        print('Cannot download file from server: %s, connection error' % server)
+        print('Cannot download file from SERVER: %s, connection error' % SERVER)
 
     except requests.exceptions.MissingSchema:
-        print('Cannot download file from server: %s, wrong URL' % server)
+        print('Cannot download file from SERVER: %s, wrong URL' % SERVER)
 
     except socket.error:
-        print('Cannot download file from server: %s, connection error' % server)
+        print('Cannot download file from SERVER: %s, connection error' % SERVER)
 
 
 def download_file2():
     try:
-        subprocess.check_call(['wget', '/'.join([server, file_name])], shell=False, stdout=DEVNULL, stderr=DEVNULL)
+        subprocess.check_call(['wget', '/'.join([SERVER, FILE_NAME])], shell=False, stdout=DEVNULL, stderr=DEVNULL)
 
     except subprocess.CalledProcessError, e:
         print('Download file, error: %s' % e.__str__())
@@ -64,15 +68,14 @@ def download_file2():
 
 def remove_file():
     try:
-        subprocess.check_call('rm -f ' + file_name, shell=True)
+        subprocess.check_call('rm -f ' + FILE_NAME, shell=True)
 
     except subprocess.CalledProcessError:
         print('Failed to clean existing file copy')
 
 
 if __name__ == '__main__':
-    server = 'http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/'
-    file_name = 'Apalis_T30_LinuxImageV2.5Beta2_20151106.tar.bz2'
+    print ("Running: %s" % os.path.basename(__file__))
 
     # Remove old downloaded file
     remove_file()

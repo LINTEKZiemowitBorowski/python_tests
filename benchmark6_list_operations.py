@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import os
 import time
 import copy
 import random
@@ -21,10 +22,13 @@ def bubble_sort(data_list):
 
 
 if __name__ == '__main__':
-    my_randoms = [random.randrange(0, MAX_VALUE + 1, 1) for _ in range(SEQUENCE_LEN)]
+    print ("Running: %s" % os.path.basename(__file__))
 
+    # Prepare data
+    my_randoms = [random.randrange(0, MAX_VALUE + 1, 1) for _ in range(SEQUENCE_LEN)]
     # print ("Not sorted data: %s" % my_list)
 
+    # Test loop
     for test in ['A', 'B']:
 
         start_time = time.time()

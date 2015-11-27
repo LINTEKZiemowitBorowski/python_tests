@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import os
 import time
 
 
@@ -9,6 +10,8 @@ def fibonacci(n):
     return fibonacci(n - 1) + fibonacci(n - 2)
 
 if __name__ == '__main__':
+    print ("Running: %s" % os.path.basename(__file__))
+
     start_time = time.time()
     fibonacci(40)
     end_time = time.time()

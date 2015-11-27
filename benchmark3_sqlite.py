@@ -5,6 +5,10 @@ import time
 import sqlite3
 
 
+DATABASE_NAME = '/tmp/my_database'
+NUM_ITER = 500
+NUM_RECORDS = 20
+
 class SQLitePersistentValueStorage(object):
     SQLITE_TABLE_NAME = "PERSISTENT_VALUES"
 
@@ -71,37 +75,29 @@ class SQLitePersistentValueStorage(object):
 
 
 if __name__ == '__main__':
+    print ("Running: %s" % os.path.basename(__file__))
 
     # Prepare test data
-    num_iter = 500
-    num_records = 20
-
-    my_data = {}
-
-    for i in xrange(num_iter):
-        my_keys = ['%d %d' % (i, x) for x in xrange(num_records)]
-        my_values = ['Record value: %d %d' % (i, x) for x in xrange(num_records)]
-        my_data[i] = dict(zip(my_keys, my_values))
-
+    data = [{'%d %d' % (i, x): 'Record value: %d %d' % (i, x) for x in xrange(NUM_RECORDS)} for i in xrange(NUM_ITER)]
     # print ('Data: %s' % str(data))
 
     # Remove old database file
     try:
-        os.remove('my_database')
+        os.remove(DATABASE_NAME)
     except OSError:
         pass
 
     # Initialize database
     storage = SQLitePersistentValueStorage()
-    storage.init_database('my_database')
+    storage.init_database(DATABASE_NAME)
 
     start_time = time.time()
 
     # Insert data into database
-    storage.insert_into_database('my_database', my_data)
+    storage.insert_into_database(DATABASE_NAME, my_data)
 
     # Read data from the database
-    retrieved_data = storage.select_from_database('my_database')
+    retrieved_data = storage.select_from_database(DATABASE_NAME)
 
     end_time = time.time()
 
