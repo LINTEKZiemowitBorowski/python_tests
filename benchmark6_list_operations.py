@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
         start_time = time.time()
 
-        tmp_list = [(copy.deepcopy(my_randoms)) for x in xrange(ITERATIONS)]
+        tmp_list = [(copy.deepcopy(my_randoms)) for _ in range(ITERATIONS)]
 
         copy_time = time.time()
 

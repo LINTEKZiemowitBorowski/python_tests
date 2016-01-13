@@ -9,6 +9,7 @@ DATABASE_NAME = '/tmp/my_database'
 NUM_ITER = 500
 NUM_RECORDS = 20
 
+
 class SQLitePersistentValueStorage(object):
     SQLITE_TABLE_NAME = "PERSISTENT_VALUES"
 
