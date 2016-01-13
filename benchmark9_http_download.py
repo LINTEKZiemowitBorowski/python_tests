@@ -16,13 +16,10 @@ except ImportError:
 
 
 SERVER = 'http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/'
-FILE_NAME = 'Apalis_T30_LinuxImageV2.5Beta2_20151106.tar.bz2'
+FILE_NAME = 'Apalis_T30_LinuxImageV2.5Beta3_20151215.tar.bz2'
 
 
 def download_file1():
-    downloaded_bytes = 0
-    chunk_size = 1024 * 8
-
     url = '/'.join([SERVER, FILE_NAME])
 
     print('Uploading file: %s' % url)
@@ -39,23 +36,20 @@ def download_file1():
 
             except KeyError:
                 print('Cannot obtain file size, assuming default size\n')
-                file_size = 100 * 1024 * 1024
 
             with open(FILE_NAME, 'wb') as fd:
-                for chunk in response.iter_content(chunk_size=chunk_size):
-                    # Filter out keep-alive new chunks
-                    if chunk:
-                        fd.write(chunk)
-                        downloaded_bytes += len(chunk)
+                for data in response.iter_content():
+                    if data:
+                        fd.write(data)
 
     except requests.exceptions.ConnectionError:
-        print('Cannot download file from SERVER: %s, connection error' % SERVER)
+        print('Cannot download file: %s, connection error' % SERVER)
 
     except requests.exceptions.MissingSchema:
-        print('Cannot download file from SERVER: %s, wrong URL' % SERVER)
+        print('Cannot download file: %s, wrong URL' % SERVER)
 
     except socket.error:
-        print('Cannot download file from SERVER: %s, connection error' % SERVER)
+        print('Cannot download file: %s, system error' % SERVER)
 
 
 def download_file2():
