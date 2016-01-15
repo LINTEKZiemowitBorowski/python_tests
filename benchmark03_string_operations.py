@@ -13,8 +13,7 @@ my_list = []
 
 
 def prepare_data():
-    # for c in xrange(0x30, 0x79, 3):
-    for c in xrange(0x30, 0x39, 3):
+    for c in xrange(0x30, 0x79, 3):
         my_list.append(chr(c) + chr(c+1) + chr(c+2))
 
 
