@@ -6,7 +6,7 @@ import time
 
 from multiprocessing import Pool
 
-NUM_ITERATIONS = 100000
+NUM_ITERATIONS = 200000
 NUM_TASKS = 50
 
 my_list = []
