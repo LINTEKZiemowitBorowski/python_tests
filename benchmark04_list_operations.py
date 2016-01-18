@@ -4,14 +4,11 @@ import os
 import time
 import copy
 import random
+import numpy
 
 SEQUENCE_LEN = 10000
 ITERATIONS = 10
 MAX_VALUE = 10000
-
-
-def builtin_sort(data_list):
-    data_list.sort()
 
 
 def bubble_sort(data_list):
@@ -29,7 +26,7 @@ if __name__ == '__main__':
     # print ("Not sorted data: %s" % my_list)
 
     # Test loop
-    for test in ['A', 'B']:
+    for case in ['A', 'B']:
 
         start_time = time.time()
 
@@ -37,15 +34,35 @@ if __name__ == '__main__':
 
         copy_time = time.time()
 
-        if test == 'A':
+        if case == 'A':
             for sub_list in tmp_list:
-                builtin_sort(sub_list)
+                sub_list.sort()
         else:
             for sub_list in tmp_list:
                 bubble_sort(sub_list)
 
         end_time = time.time()
 
-        print ("Copying time: %f" % (copy_time - start_time))
-        print ("Sorting time: %f" % (end_time - copy_time))
+        print ("Copying time, case %s: %f" % (case, (copy_time - start_time)))
+        print ("Sorting time, case %s: %f" % (case, (end_time - copy_time)))
+        # print ("Sorted data: %s" % tmp_list)
+
+    for case in ['A', 'B']:
+
+        start_time = time.time()
+
+        tmp_list = numpy.array([my_randoms for _ in range(ITERATIONS)])
+
+        copy_time = time.time()
+
+        if case == 'A':
+            tmp_list = numpy.sort(tmp_list)
+        else:
+            for sub_list in tmp_list:
+                bubble_sort(sub_list)
+
+        end_time = time.time()
+
+        print ("Numpy copying time, case %s: %f" % (case, (copy_time - start_time)))
+        print ("Numpy sorting time, case %s: %f" % (case, (end_time - copy_time)))
         # print ("Sorted data: %s" % tmp_list)
