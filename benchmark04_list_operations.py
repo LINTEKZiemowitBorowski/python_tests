@@ -5,6 +5,7 @@ import time
 import copy
 import random
 import numpy
+import array
 
 SEQUENCE_LEN = 10000
 ITERATIONS = 10
@@ -43,8 +44,28 @@ if __name__ == '__main__':
 
         end_time = time.time()
 
-        print ("Copying time, case %s: %f" % (case, (copy_time - start_time)))
-        print ("Sorting time, case %s: %f" % (case, (end_time - copy_time)))
+        print ("Python list copying time, case %s: %f" % (case, (copy_time - start_time)))
+        print ("Python list sorting time, case %s: %f" % (case, (end_time - copy_time)))
+        # print ("Sorted data: %s" % tmp_list)
+
+    for case in ['A', 'B']:
+
+        start_time = time.time()
+
+        tmp_list = [array.array('i', my_randoms) for _ in range(ITERATIONS)]
+
+        copy_time = time.time()
+
+        if case == 'A':
+            tmp_list = numpy.sort(tmp_list)
+        else:
+            for sub_list in tmp_list:
+                bubble_sort(sub_list)
+
+        end_time = time.time()
+
+        print ("Python array copying time, case %s: %f" % (case, (copy_time - start_time)))
+        print ("Python array soring time, case %s: %f" % (case, (end_time - copy_time)))
         # print ("Sorted data: %s" % tmp_list)
 
     for case in ['A', 'B']:
