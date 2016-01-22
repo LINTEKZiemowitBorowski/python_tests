@@ -60,7 +60,7 @@ class SQLitePersistentValueStorage(object):
             connection.text_factory = str
             cursor = connection.cursor()
 
-            for m_value in values.values():
+            for m_value in values:
                 cursor.executemany("INSERT OR REPLACE INTO " + self.SQLITE_TABLE_NAME + " VALUES(?,?)",
                                    [(name, value) for name, value in m_value.items()])
             connection.commit()
@@ -78,9 +78,9 @@ class SQLitePersistentValueStorage(object):
 if __name__ == '__main__':
     print ("Running: %s" % os.path.basename(__file__))
 
-    # Prepare test data
-    data = [{'%d %d' % (i, x): 'Record value: %d %d' % (i, x) for x in xrange(NUM_RECORDS)} for i in xrange(NUM_ITER)]
-    # print ('Data: %s' % str(data))
+    # Prepare test my_data
+    my_data = [{'%d %d' % (i, x): 'Record value: %d %d' % (i, x) for x in xrange(NUM_RECORDS)} for i in xrange(NUM_ITER)]
+    # print ('Data: %s' % str(my_data))
 
     # Remove old database file
     try:
@@ -94,17 +94,21 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    # Insert data into database
+    # Insert my_data into database
     storage.insert_into_database(DATABASE_NAME, my_data)
 
-    # Read data from the database
+    select_time = time.time()
+
+    # Read my_data from the database
     retrieved_data = storage.select_from_database(DATABASE_NAME)
 
     end_time = time.time()
 
-    execution_time = end_time - start_time
-    print ("Execution time: %f\n" % execution_time)
+    inserting_time = select_time - start_time
+    reading_time = end_time - select_time
+    print ("Inserting time: %f" % inserting_time)
+    print ("Reading time: %f" % reading_time)
 
     print ('Num retrieved items: %d' % len(retrieved_data.items()))
-    # print ('Retrieved data: %s' % str(retrieved_data))
+    # print ('Retrieved my_data: %s' % str(retrieved_data))
 

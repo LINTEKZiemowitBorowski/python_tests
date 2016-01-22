@@ -22,9 +22,9 @@ def bubble_sort(data_list):
 if __name__ == '__main__':
     print ("Running: %s" % os.path.basename(__file__))
 
-    # Prepare data
+    # Prepare my_data
     my_randoms = [random.randrange(0, MAX_VALUE + 1, 1) for _ in range(SEQUENCE_LEN)]
-    # print ("Not sorted data: %s" % my_list)
+    # print ("Not sorted my_data: %s" % my_list)
 
     # Test loop
     for case in ['A', 'B']:
@@ -46,7 +46,9 @@ if __name__ == '__main__':
 
         print ("Python list copying time, case %s: %f" % (case, (copy_time - start_time)))
         print ("Python list sorting time, case %s: %f" % (case, (end_time - copy_time)))
-        # print ("Sorted data: %s" % tmp_list)
+        # print ("Sorted my_data: %s" % tmp_list)
+
+        del tmp_list
 
     for case in ['A', 'B']:
 
@@ -66,7 +68,9 @@ if __name__ == '__main__':
 
         print ("Python array copying time, case %s: %f" % (case, (copy_time - start_time)))
         print ("Python array soring time, case %s: %f" % (case, (end_time - copy_time)))
-        # print ("Sorted data: %s" % tmp_list)
+        # print ("Sorted my_data: %s" % tmp_list)
+
+        del tmp_list
 
     for case in ['A', 'B']:
 
@@ -86,4 +90,6 @@ if __name__ == '__main__':
 
         print ("Numpy copying time, case %s: %f" % (case, (copy_time - start_time)))
         print ("Numpy sorting time, case %s: %f" % (case, (end_time - copy_time)))
-        # print ("Sorted data: %s" % tmp_list)
+        # print ("Sorted my_data: %s" % tmp_list)
+
+        del tmp_list

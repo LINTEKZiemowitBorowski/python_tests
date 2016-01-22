@@ -23,7 +23,7 @@ def search_map(my_keys, my_map):
 if __name__ == '__main__':
     print ("Running: %s" % os.path.basename(__file__))
 
-    # Prepare data
+    # Prepare my_data
     created_keys = get_randoms()
     print("created_keys len: %d\n" % len(created_keys))
     # print("created_keys: %s\n" % created_keys)

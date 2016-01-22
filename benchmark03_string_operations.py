@@ -76,6 +76,8 @@ if __name__ == '__main__':
     print ("Execution time(concatenation using threading): %f\n" % execution_time)
     # print ("Output: %s\n" % results.values())
 
+    del results
+
     pool = Pool(processes=4)
     start_time = time.time()
     results = [pool.apply_async(my_function2) for p in xrange(NUM_TASKS)]
@@ -98,6 +100,8 @@ if __name__ == '__main__':
 
     print ("Execution time(string joining using threading): %f\n" % execution_time)
     # print ("Output: %s\n" % results.values())
+
+    del results
 
     pool = Pool(processes=4)
     start_time = time.time()

@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     crc = CRC16()
     data = prepare_data()
-    # print ("data: %s\n" % data)
+    # print ("my_data: %s\n" % my_data)
 
     start_time = time.time()
     check_sums = ['%04X' % crc.calculate(data_item) for data_item in data]
