@@ -2,7 +2,7 @@
 
 import os
 import time
-from pymongo import MongoClient
+import pymongo
 
 
 DATABASE_NAME = 'my_database'
@@ -12,17 +12,19 @@ NUM_RECORDS = 20
 
 
 def init_database():
-    dc = MongoClient()[DATABASE_NAME][COLLECTION_NAME].delete_many({})
+    dc = pymongo.MongoClient()[DATABASE_NAME][COLLECTION_NAME]
+    dc.delete_many({})
+    dc.create_index([("RecordId", pymongo.ASCENDING)])
 
 
 def insert_into_database(value_set):
-    dc = MongoClient()[DATABASE_NAME][COLLECTION_NAME]
+    dc = pymongo.MongoClient()[DATABASE_NAME][COLLECTION_NAME]
     for value_item in value_set:
         dc.insert_many(value_item)
 
 
 def select_from_database():
-    dc = MongoClient()[DATABASE_NAME][COLLECTION_NAME]
+    dc = pymongo.MongoClient()[DATABASE_NAME][COLLECTION_NAME]
     return dc.find({}, {"_id": False})
 
 
@@ -30,7 +32,7 @@ if __name__ == '__main__':
     print ("Running: %s" % os.path.basename(__file__))
 
     # Prepare test my_data
-    my_data = [[{'%d %d' % (i, x): 'Record value: %d %d' % (i, x)} for x in xrange(NUM_RECORDS)]
+    my_data = [[{'RecordId': (100 * i) + x, 'RecordValue:': '%d %d' % (i, x)} for x in xrange(NUM_RECORDS)]
                for i in xrange(NUM_ITER)]
     # print ('Data: %s' % str(my_data))
 
