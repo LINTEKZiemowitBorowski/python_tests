@@ -57,7 +57,8 @@ if __name__ == '__main__':
     t2 = time.time()
 
     # Update my_data in the database
-    [update_into_database({"RecordId": {"$gte": (i * 100), "$lt": ((i * 100) + 100)}},
+    [update_into_database({"RecordId": {"$gte": (i * 100), "$lt": ((i * 100) + 100)},
+                           "RecordValue": {"$regex": ".*0$"}},
                           {"$set": {"RecordValue": "updated"}})
      for i in xrange(NUM_ITER)]
 
@@ -78,7 +79,7 @@ if __name__ == '__main__':
 
     # print ('Source data: %s' % str(my_data))
     #
-    # print ('Inserted data:')
+    # print ('Database data:')
     # for subset in inserted_data:
     #     for record in subset:
     #         print record
