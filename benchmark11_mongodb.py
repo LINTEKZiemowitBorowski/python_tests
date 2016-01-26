@@ -23,42 +23,69 @@ def insert_into_database(value_set):
         dc.insert_many(value_item)
 
 
-def select_from_database():
+def update_into_database(query, value):
     dc = pymongo.MongoClient()[DATABASE_NAME][COLLECTION_NAME]
-    return dc.find({}, {"_id": False}).sort([("RecordId", pymongo.ASCENDING)])
+    return dc.update_many(query, value)
+
+
+def select_from_database(query):
+    dc = pymongo.MongoClient()[DATABASE_NAME][COLLECTION_NAME]
+    return dc.find(query, {"_id": False}).sort([("RecordId", pymongo.ASCENDING)])
 
 
 if __name__ == '__main__':
     print ("Running: %s" % os.path.basename(__file__))
 
     # Prepare test my_data
-    my_data = [[{'RecordId': (100 * i) + x, 'RecordValue:': '%d %d' % (i, x)} for x in xrange(NUM_RECORDS)]
+    my_data = [[{'RecordId': (100 * i) + x, 'RecordValue': '%d %d' % (i, x)} for x in xrange(NUM_RECORDS)]
                for i in xrange(NUM_ITER)]
-    # print ('Data: %s' % str(my_data))
 
     # Initialize database
     init_database()
 
-    start_time = time.time()
+    t0 = time.time()
 
     # Insert my_data into database
     insert_into_database(my_data)
 
-    select_time = time.time()
+    t1 = time.time()
 
     # Read my_data from the database
-    retrieved_data = select_from_database()
+    inserted_data = [select_from_database({"RecordId": {"$gte": (i * 100), "$lt": ((i * 100) + 100)}})
+                     for i in xrange(NUM_ITER)]
 
-    end_time = time.time()
+    t2 = time.time()
 
-    inserting_time = select_time - start_time
-    reading_time = end_time - select_time
-    print ("Inserting time: %f" % inserting_time)
-    print ("Reading time: %f" % reading_time)
-    print ('Num retrieved items: %d' % retrieved_data.count())
+    # Update my_data in the database
+    [update_into_database({"RecordId": {"$gte": (i * 100), "$lt": ((i * 100) + 100)}},
+                          {"$set": {"RecordValue": "updated"}})
+     for i in xrange(NUM_ITER)]
 
-    for record in retrieved_data:
-        print record
+    t3 = time.time()
+
+    # Read my_data from the database again
+    updated_data = select_from_database({"RecordValue": "updated"})
+
+    t4 = time.time()
+
+    print ("Inserting time: %f" % (t1 - t0))
+    print ("Reading time: %f" % (t2 - t1))
+    print ("Updating time: %f" % (t3 - t1))
+    print ("Reading time: %f" % (t4 - t3))
+
+    print ('Num inserted items: %d' % sum([inserted_data[i].count() for i in xrange(NUM_ITER)]))
+    print ('Num updated items: %d' % updated_data.count())
+
+    # print ('Source data: %s' % str(my_data))
+    #
+    # print ('Inserted data:')
+    # for subset in inserted_data:
+    #     for record in subset:
+    #         print record
+    #
+    # print ('Updated data:')
+    # for record in updated_data:
+    #         print record
 
 
 
