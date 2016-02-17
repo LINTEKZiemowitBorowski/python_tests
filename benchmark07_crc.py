@@ -1,9 +1,13 @@
 #!/usr/bin/python
 
 import os
+import sys
 import struct
 import time
 
+sys.path.append("./benchmark_cython_module")
+
+import benchmark_cython_module
 
 ARRAY_LEN = 255
 NUM_ITEMS = 10000
@@ -60,8 +64,15 @@ if __name__ == '__main__':
     # print ("my_data: %s\n" % my_data)
 
     start_time = time.time()
-    check_sums = ['%04X' % calculate_crc(data_item) for data_item in my_data]
+    check_sums0 = ['%04X' % calculate_crc(data_item) for data_item in my_data]
     stop_time = time.time()
 
-    print ("Execution time: %f" % (stop_time - start_time))
+    print ("Execution time: %f\n" % (stop_time - start_time))
+    # print ("check_sums: %s\n" % check_sums)
+
+    start_time = time.time()
+    check_sums1 = ['%04X' % benchmark_cython_module.benchmark07_function(data_item) for data_item in my_data]
+    stop_time = time.time()
+
+    print ("Execution time (using cython module): %f\n" % (stop_time - start_time))
     # print ("check_sums: %s\n" % check_sums)

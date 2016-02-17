@@ -1,10 +1,16 @@
 #!/usr/bin/python
 
 import os
+import sys
 import threading
 import time
 
 from multiprocessing import Pool
+
+sys.path.append("./benchmark_cython_module")
+
+import benchmark_cython_module
+
 
 NUM_ITERATIONS = 1000000
 NUM_TASKS = 50
@@ -43,6 +49,31 @@ if __name__ == '__main__':
     end_time = time.time()
     execution_time = end_time - start_time
 
-    print ("Execution time(using multiprocessing.Pool): %f" % execution_time)
+    print ("Execution time(using multiprocessing.Pool): %f\n" % execution_time)
+    # print ("Results: %s\n" % [x.get() for x in results])
+
+    results = {}
+    jobs = [threading.Thread(target=benchmark_cython_module.benchmark00_function1,
+                             kwargs=dict(in_value=i, out_value=results, num_iters=NUM_ITERATIONS))
+            for i in xrange(NUM_TASKS)]
+    start_time = time.time()
+    [t.start() for t in jobs]
+    [t.join() for t in jobs]
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print ("Execution time(using threading and cython module): %f\n" % execution_time)
+    # print ("Results: %s\n" % results.values())
+
+    pool = Pool(processes=4)
+    start_time = time.time()
+    results = [pool.apply_async(benchmark_cython_module.benchmark00_function2, [p, NUM_ITERATIONS])
+               for p in xrange(NUM_TASKS)]
+    pool.close()
+    pool.join()
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print ("Execution time(using multiprocessing.Pool and cython module): %f\n" % execution_time)
     # print ("Results: %s\n" % [x.get() for x in results])
 
