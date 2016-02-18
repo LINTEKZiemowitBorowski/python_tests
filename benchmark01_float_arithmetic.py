@@ -22,7 +22,7 @@ def my_function1(in_value, out_value):
 
 
 def my_function2(in_value):
-    return sum([(math.sqrt(z * z) + (z * z * math.pi * math.pi)) + in_value
+    return sum([math.sqrt((z * z) + (z * z * math.pi * math.pi)) + in_value
                 for z in xrange(NUM_ITERATIONS)])
 
 
