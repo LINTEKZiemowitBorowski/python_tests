@@ -12,7 +12,7 @@ cdef double benchmark00_c_function2(size_t in_value, size_t num_iters):
     cdef double sum = 0
     cdef size_t z
 
-    for z in xrange(num_iters):
+    for z in range(num_iters):
         sum += (((z * z) + (z * z * 3.14 * 3.14)) / 5.5) + in_value
 
     return sum
@@ -29,7 +29,7 @@ cdef double benchmark01_c_function2(size_t in_value, size_t num_iters):
     cdef double sum = 0
     cdef size_t z
 
-    for z in xrange(num_iters):
+    for z in range(num_iters):
         sum +=  (math.sqrt(z * z) + (z * z * math.pi * math.pi)) + in_value
 
     return sum
@@ -46,7 +46,7 @@ cdef unsigned long benchmark02_c_function2(size_t in_value, size_t num_iters):
     cdef unsigned long sum = 0
     cdef size_t z
 
-    for z in xrange(num_iters):
+    for z in range(num_iters):
         sum += (((z * z) + (z * z * 9)) / 5) + in_value
 
     return sum
@@ -91,8 +91,9 @@ def benchmark07_function(data):
 
 cdef unsigned short benchmark07_c_function(unsigned char *data, unsigned int data_len):
     cdef unsigned short crc = 0xFFFF
+    cdef unsigned int idx
 
-    for idx in xrange(data_len):
+    for idx in range(data_len):
         crc = (crc >> 8) ^ table[(crc ^ data[idx]) & 0xFF]
 
     return crc
