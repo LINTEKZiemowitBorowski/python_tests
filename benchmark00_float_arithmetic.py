@@ -4,6 +4,7 @@ import os
 import sys
 import threading
 import time
+import concurrent.futures
 
 from multiprocessing import Pool
 
@@ -41,6 +42,7 @@ if __name__ == '__main__':
     print ("Execution time(using threading): %f\n" % execution_time)
     # print ("Results: %s\n" % results.values())
 
+    results = {}
     pool = Pool(processes=4)
     start_time = time.time()
     results = [pool.apply_async(my_function2, [p]) for p in xrange(NUM_TASKS)]
@@ -51,6 +53,20 @@ if __name__ == '__main__':
 
     print ("Execution time(using multiprocessing.Pool): %f\n" % execution_time)
     # print ("Results: %s\n" % [x.get() for x in results])
+
+    results = {}
+    start_time = time.time()
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
+        t_res = {executor.submit(my_function2, x): x for x in xrange(NUM_TASKS)}
+
+    results = {t_res[item]: item.result() for item in concurrent.futures.as_completed(t_res)}
+
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print ("Execution time(using concurrent.futures.ProcessPollExecutor): %f\n" % execution_time)
+    # print ("Results: %s\n" % results.values())
 
     results = {}
     jobs = [threading.Thread(target=benchmark_cython_module.benchmark00_function1,
@@ -65,6 +81,7 @@ if __name__ == '__main__':
     print ("Execution time(using threading and cython module): %f\n" % execution_time)
     # print ("Results: %s\n" % results.values())
 
+    results = {}
     pool = Pool(processes=4)
     start_time = time.time()
     results = [pool.apply_async(benchmark_cython_module.benchmark00_function2, [p, NUM_ITERATIONS])
@@ -76,4 +93,20 @@ if __name__ == '__main__':
 
     print ("Execution time(using multiprocessing.Pool and cython module): %f\n" % execution_time)
     # print ("Results: %s\n" % [x.get() for x in results])
+
+    results = {}
+    start_time = time.time()
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
+        t_res = {executor.submit(benchmark_cython_module.benchmark00_function2, x, NUM_ITERATIONS): x
+                 for x in xrange(NUM_TASKS)}
+
+    results = {t_res[item]: item.result() for item in concurrent.futures.as_completed(t_res)}
+
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    print ("Execution time(using concurrent.futures.ProcessPollExecutor and cython module): %f\n" % execution_time)
+    # print ("Results: %s\n" % results.values())
+
 
