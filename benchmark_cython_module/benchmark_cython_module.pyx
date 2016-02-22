@@ -1,5 +1,6 @@
 
 import math
+import functools32
 
 def benchmark00_function1(in_value, out_value, num_iters):
     return benchmark00_c_function1(in_value, out_value, num_iters)
@@ -126,8 +127,23 @@ cdef unsigned short benchmark07_c_function(unsigned char *data, unsigned int dat
 def benchmark06_function(int n):
     return benchmark06_c_function(n)
 
-
 cdef int benchmark06_c_function(int n):
     if n <= 1:
         return n
     return benchmark06_c_function(n - 1) + benchmark06_c_function(n - 2)
+
+cache = {}
+
+def benchmark06_cached_function(int n):
+    cache = {}
+    return benchmark06_cached_c_function(n)
+
+cdef int benchmark06_cached_c_function(int n):
+    if n <= 1:
+        return n
+    try:
+        val = cache[n]
+    except KeyError:
+        val = benchmark06_cached_c_function(n - 1) + benchmark06_cached_c_function(n - 2)
+        cache[n] = val
+    return val
