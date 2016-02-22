@@ -5,75 +5,75 @@ def benchmark00_function1(in_value, out_value, num_iters):
     return benchmark00_c_function1(in_value, out_value, num_iters)
 
 cdef benchmark00_c_function1(size_t in_value, out_value, size_t num_iters):
-    cdef double sum = 0
+    cdef double value = 0
     cdef size_t z
 
     for z in range(num_iters):
-        sum += (((z * z) + (z * z * 3.14 * 3.14)) / 5.5) + in_value
+        value += (((z * z) + (z * z * 3.14 * 3.14)) / 5.5) + in_value
 
-    out_value[in_value] = sum
+    out_value[in_value] = value
 
 def benchmark00_function2(in_value, num_iters):
     return benchmark00_c_function2(in_value, num_iters)
 
 cdef double benchmark00_c_function2(size_t in_value, size_t num_iters):
-    cdef double sum = 0
+    cdef double value = 0
     cdef size_t z
 
     for z in range(num_iters):
-        sum += (((z * z) + (z * z * 3.14 * 3.14)) / 5.5) + in_value
+        value += (((z * z) + (z * z * 3.14 * 3.14)) / 5.5) + in_value
 
-    return sum
+    return value
 
 
 def benchmark01_function1(in_value, out_value, num_iters):
     return benchmark01_c_function1(in_value, out_value, num_iters)
 
 cdef benchmark01_c_function1(size_t in_value, out_value, size_t num_iters):
-    cdef double sum = 0
+    cdef double value = 0
     cdef size_t z
 
     for z in range(num_iters):
-        sum +=  math.sqrt((z * z) + (z * z * math.pi * math.pi)) + in_value
+        value +=  math.sqrt((z * z) + (z * z * math.pi * math.pi)) + in_value
 
-    out_value[in_value] = sum
+    out_value[in_value] = value
 
 def benchmark01_function2(in_value, num_iters):
     return benchmark01_c_function2(in_value, num_iters)
 
 cdef double benchmark01_c_function2(size_t in_value, size_t num_iters):
-    cdef double sum = 0
+    cdef double value = 0
     cdef size_t z
 
     for z in range(num_iters):
-        sum += math.sqrt((z * z) + (z * z * math.pi * math.pi)) + in_value
+        value += math.sqrt((z * z) + (z * z * math.pi * math.pi)) + in_value
 
-    return sum
+    return value
 
 
 def benchmark02_function1(in_value, out_value, num_iters):
     return benchmark02_c_function1(in_value, out_value, num_iters)
 
 cdef benchmark02_c_function1(size_t in_value, out_value, size_t num_iters):
-    cdef unsigned long sum = 0
+    cdef unsigned long value = 0
     cdef size_t z
 
     for z in range(num_iters):
-        sum += (((z * z) + (z * z * 9)) / 5) + in_value
+        value += (((z * z) + (z * z * 9)) / 5) + in_value
 
-    out_value[in_value] = sum
+    out_value[in_value] = value
 
 def benchmark02_function2(in_value, num_iters):
     return benchmark02_c_function2(in_value, num_iters)
 
 cdef unsigned long benchmark02_c_function2(size_t in_value, size_t num_iters):
-    cdef unsigned long sum = 0
+    cdef unsigned long value = 0
     cdef size_t z
 
     for z in range(num_iters):
-        sum += (((z * z) + (z * z * 9)) / 5) + in_value
+        value += (((z * z) + (z * z * 9)) / 5) + in_value
 
-    return sum
+    return value
 
 
 cdef unsigned short *table = [
@@ -145,8 +145,8 @@ cdef int benchmark06_cached_c_function(int n):
     if n <= 1:
         return n
     try:
-        val = cache[n]
+        value = cache[n]
     except KeyError:
-        val = benchmark06_cached_c_function(n - 1) + benchmark06_cached_c_function(n - 2)
-        cache[n] = val
-    return val
+        value = benchmark06_cached_c_function(n - 1) + benchmark06_cached_c_function(n - 2)
+        cache[n] = value
+    return value
